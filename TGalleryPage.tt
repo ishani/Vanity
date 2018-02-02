@@ -1,0 +1,145 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<#@ include file="TCommonHeader.html" #>
+
+ <# Boolean isHomePage = mAlbum.mParentAlbum == null; #>
+
+
+        <div class="container">
+
+            <div class="page-top text-center">
+
+                <!-- minimalist navbar -->
+                <div class="row">
+
+                     <# if (isHomePage) { #>
+                        <div class="col text-muted">
+                        <i class="fas fa-home"></i> Home
+                    <# } else { #> 
+                        <div class="col">
+                        <a href="/"><i class="fas fa-home"></i> Home</a>
+                    <# } #> 
+
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col">
+                        <a href="/about.html"><i class="fas fa-question-circle"></i> About</a>
+                    </div>
+                </div>
+
+                <br>
+
+                <!-- album titles, parents, descriptions, tags -->
+
+                <# List<AlbumFolder> parentAlbums = new List<AlbumFolder>();
+                   AlbumFolder currentAlbum = mAlbum.mParentAlbum; 
+                   while (currentAlbum != null) 
+                   {
+                        if ( currentAlbum.mParentAlbum != null )
+                            parentAlbums.Add(currentAlbum);
+
+                        currentAlbum = currentAlbum.mParentAlbum;
+                   }
+                   parentAlbums.Reverse();
+
+                   Int32 numParents = parentAlbums.Count();
+
+                   if (numParents > 0) { #>
+                   <div class="page-title text-uppercase text-light page-title-parent">
+                   <# } 
+
+                   for (Int32 i=0; i<numParents; i++)
+                   {
+                   var cur = parentAlbums[i]; #>
+
+                   · <a href="<#= mGalleryRootURL #><#= cur.mRelativeRootHTML #>"><#= cur.mPrettyName #></a>
+
+                   <#}
+
+
+                   if (numParents > 0) { #>
+                    · </div>
+                   <# } #>
+
+                <# if (isHomePage) { #>
+                    <div class="page-title text-uppercase text-info">
+                        Ishani · Gallery
+                    </div>                
+                    <i>Photography by Harry Denholm. All images <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC-BY-NC-ND</a>.</i>
+                <# } else { #> 
+                    <div class="page-title text-uppercase text-warning">
+                        <#= mAlbum.mPrettyName #>
+                    </div>
+                <# } #> 
+
+                <# if (mAlbum.mMetadataDescription.Length > 0) { #> <i><#= mAlbum.mMetadataDescription #></i> <br> <# } #>
+
+                <# if (mAlbum.mYear > 0) { #> <span class="badge badge-light"><#= mAlbum.mYear #></span> <# } #>
+                <# if (mAlbum.mCamera.Length > 0) { #> <span class="badge badge-light"><#= mAlbum.mCamera #></span> <# } #>
+
+
+            </div>
+
+
+<#	Int32 albumCount = mAlbum.mOrderedAlbums.Count();
+    Boolean shouldPad = albumCount < 4 && (albumCount % 4 ) != 0;
+
+    if (albumCount > 0 ) { #>
+
+            <!-- sub-albums -->
+            <div class="row pinched-row"> 
+            
+                <# if (shouldPad) { #> <div class="col-lg"></div> <# } #>
+
+<# foreach (var subAlbum in mAlbum.mOrderedAlbums) { #>
+     
+                <div class="col-md-6 col-lg-3">
+                    <div class="card pic-card album-card">
+                        <a href="<#= mGalleryRootURL #><#= subAlbum.mRelativeRootHTML #>" itemprop="contentUrl">
+                            <img class="card-img-top" src="<#= mPhotoRootURL #>/album/<#= subAlbum.mHashedRep #>.jpg" alt="<#= subAlbum.mPrettyNameWithYear #>" itemprop="thumbnail">
+                        </a>
+                        <div class="album-footer">
+                            <i class="fas fa-images"></i> <#= subAlbum.mPrettyNameWithYear #>
+                        </div>
+                    </div>
+                </div>
+
+<# } // end of foreach  #>
+
+                <# if (shouldPad) { #> <div class="col-lg"></div> <# } #>
+
+                <div class="col-12 text-center text-muted" style="font-size: 2.0rem"> • • • </div>
+            </div>
+
+<# } // end of album conditional  #>
+
+
+
+
+
+            <div class="card-columns">
+                <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+
+<# foreach (Photograph item in mAlbum.mPhotos) { #>
+
+                    <div class="card pic-card">
+                        <a href="<#= mPhotoRootURL #>/full/<#= item.mHashedPath #>.jpg" itemprop="contentUrl" data-size="<#= item.mImageWidth #>x<#= item.mImageHeight #>">
+                            <img class="card-img-top" src="<#= mPhotoRootURL #>/thumb/<#= item.mHashedPath #>.jpg" alt="<#= item.mPrettyName #>" itemprop="thumbnail">
+                        </a>
+                    </div>
+
+<# } // end of foreach  #>
+
+
+                </div>
+            </div>
+
+
+         </div>
+
+<#@ include file="TCommonFooter.html" #>
