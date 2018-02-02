@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Vanity
@@ -84,6 +85,8 @@ namespace Vanity
     {
         [CommandLineArgumentAttribute("in")]
         static String argPathIn = null;
+        [CommandLineArgumentAttribute("assets")]
+        static String argAssets = null;
         [CommandLineArgumentAttribute("out")]
         static String argPathOut = null;
 
@@ -127,7 +130,11 @@ namespace Vanity
                 Console.WriteLine("missing -in argument for album input path");
                 return;
             }
-
+            if (argAssets == null)
+            {
+                Console.WriteLine("missing -assets argument for static assets source path");
+                return;
+            }
             if (argPathOut == null)
             {
                 Console.WriteLine("missing -out argument for build directory");
@@ -142,6 +149,28 @@ namespace Vanity
 
             try
             {
+                Console.WriteLine("Copying static assets...");
+                // copy static assets over into output directory, verbatim
+                Directory.GetFiles(argAssets, "*.*", SearchOption.AllDirectories)
+                    .Select(c => new FileInfo(c))
+                    .ToList()
+                    .ForEach(c => {
+                        // get the source file from [argAssets], erase that input path so we are left with just the relative part eg. css/local.css
+                        String relPath = c.FullName.Replace(argAssets, "");
+
+                        // form a target path to copy to
+                        String copyPath = Path.GetFullPath(argPathOut + "/_assets/" + relPath);
+
+                        // ensure the directory exists
+                        Directory.CreateDirectory(Path.GetDirectoryName(copyPath));
+
+                        // copy it
+                        c.CopyTo(copyPath, true);
+                        }
+                    );
+
+
+                Console.WriteLine("Gathering gallery data...");
                 ImageTree imageTree = new ImageTree(dataInputPath, photoOutputPath);
 
                 imageTree.mRootAlbum.mName =

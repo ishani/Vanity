@@ -103,13 +103,14 @@ namespace Vanity
                     "trong>Olympus PEN-F</strong>, a small bag of lenses and <strong>DxO PhotoLab</st" +
                     "rong>. Previously: Lightroom, Olympus E-M1, Panasonic GX1, GF1, Canon 50D, 400D," +
                     " 300D, 1000F, darkroom.</p>\r\n    <br>\r\n    <p>This gallery is generated offline " +
-                    "by my own bespoke C# app - <strong>Vanity</strong> - and statically served. Serv" +
-                    "er synchrony is maintained with the excellent <a href=\"http://www.2brightsparks." +
-                    "com/syncback/syncback-hub.html\" target=\"_blank\">SyncBack</a>. The client code us" +
-                    "es <a href=\"http://getbootstrap.com/\" target=\"_blank\">Bootstrap 4</a> and <a hre" +
-                    "f=\"http://photoswipe.com/\" target=\"_blank\">Photoswipe</a>. HTML is minified usin" +
-                    "g <a href=\"https://github.com/2xmax/System.Web.StaticOptimization\" target=\"_blan" +
-                    "k\">Zeta</a>.</p>\r\n    <br>\r\n    <p>This version was generated on <strong>");
+                    "by my own bespoke C# app - <strong>Vanity</strong>, <a href=\"https://github.com/" +
+                    "ishani/Vanity\" target=\"_blank\">source on GitHub</a> - and statically served. Ser" +
+                    "ver synchrony is maintained with the excellent <a href=\"http://www.2brightsparks" +
+                    ".com/syncback/syncback-hub.html\" target=\"_blank\">SyncBack</a>. The client code u" +
+                    "ses <a href=\"http://getbootstrap.com/\" target=\"_blank\">Bootstrap 4</a> and <a hr" +
+                    "ef=\"http://photoswipe.com/\" target=\"_blank\">Photoswipe</a>. HTML is minified usi" +
+                    "ng <a href=\"https://github.com/2xmax/System.Web.StaticOptimization\" target=\"_bla" +
+                    "nk\">Zeta</a>.</p>\r\n    <br>\r\n    <p>This version was generated on <strong>");
             
             #line 35 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TAboutPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MMMM dd, yyyy")));

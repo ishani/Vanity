@@ -346,8 +346,8 @@ namespace Vanity
             
             #line default
             #line hidden
-            this.Write("\" itemprop=\"contentUrl\">\r\n                            <img class=\"card-img-top\" s" +
-                    "rc=\"");
+            this.Write("\" itemprop=\"contentUrl\" style=\"height:100%\">\r\n                            <img cl" +
+                    "ass=\"card-img-top\" src=\"");
             
             #line 104 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPhotoRootURL));
