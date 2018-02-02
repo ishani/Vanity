@@ -1,6 +1,10 @@
 # Vanity
 Static site generator for my photography gallery, [photography.ishani.org](http://photography.ishani.org)
 
+![Demo image 1](https://raw.githubusercontent.com/ishani/Vanity/master/doc/vanity_1.jpg)
+
+![Demo image 2](https://raw.githubusercontent.com/ishani/Vanity/master/doc/vanity_2.jpg)
+
 ### Features
 Vanity accepts an arbitrarily-deep folder hierarchy of images, per-gallery JSON configuration metadata and produces high-quality thumbnails and a set of lean, minified HTML files using T4 templating.
 
