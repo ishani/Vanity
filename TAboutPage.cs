@@ -50,18 +50,17 @@ namespace Vanity
 
         <meta name=""viewport"" content=""width=device-width, minimum-scale=1, maximum-scale=1""/>
         <meta name=""twitter:card"" content=""summary"">
-        <meta name=""twitter:domain"" content=""photography.ishani.org""/>
         <meta name=""og:type"" content=""website"" />
         <meta name=""og:title"" content=""Photography by Harry Denholm - ");
             
-            #line 24 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 23 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPageTitle));
             
             #line default
             #line hidden
             this.Write("\" />\r\n\r\n        <title>Ishani\'s Gallery &middot; ");
             
-            #line 26 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 25 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPageTitle));
             
             #line default
@@ -83,7 +82,7 @@ namespace Vanity
         <!-- local CSS -->
         <link rel=""stylesheet"" type=""text/css"" href=""/_assets/css/local.css?v=");
             
-            #line 41 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 40 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mVersion));
             
             #line default
@@ -94,23 +93,24 @@ namespace Vanity
                     "     <div class=\"col\">\r\n                    <a href=\"/\"><i class=\"fas fa-home\"><" +
                     "/i> Home</a>\r\n                </div>\r\n                <div class=\"col-6\">\r\n     " +
                     "           </div>\r\n                <div class=\"col text-muted\">\r\n               " +
-                    "     <i class=\"fas fa-question-circle\"></i> About\r\n                </div>\r\n     " +
-                    "       </div>\r\n\r\n        </div>\r\n\r\n\r\n  <div class=\"jumbotron bg-dark\">\r\n    <h1>" +
-                    "About</h1>\r\n    <p>Hello! I\'m Harry, this is where I park the pictures I can sta" +
-                    "nd to show other people. My main site is <a href=\"http://www.ishani.org/\" target" +
-                    "=\"_blank\">over yonder</a>. I also keep a small stash of images on <a href=\"http:" +
-                    "//500px.com/ishani\" target=\"_blank\">500px</a>.</p>\r\n    <p>Currently I use an <s" +
-                    "trong>Olympus PEN-F</strong>, a small bag of lenses and <strong>DxO PhotoLab</st" +
-                    "rong>. Previously: Lightroom, Olympus E-M1, Panasonic GX1, GF1, Canon 50D, 400D," +
-                    " 300D, 1000F, darkroom.</p>\r\n    <br>\r\n    <p>This gallery is generated offline " +
-                    "by my own bespoke C# app - <strong>Vanity</strong>, <a href=\"https://github.com/" +
-                    "ishani/Vanity\" target=\"_blank\">source on GitHub</a> - and statically served. Ser" +
-                    "ver synchrony is maintained with the excellent <a href=\"http://www.2brightsparks" +
-                    ".com/syncback/syncback-hub.html\" target=\"_blank\">SyncBack</a>. The client code u" +
-                    "ses <a href=\"http://getbootstrap.com/\" target=\"_blank\">Bootstrap 4</a> and <a hr" +
-                    "ef=\"http://photoswipe.com/\" target=\"_blank\">Photoswipe</a>. HTML is minified usi" +
-                    "ng <a href=\"https://github.com/2xmax/System.Web.StaticOptimization\" target=\"_bla" +
-                    "nk\">Zeta</a>.</p>\r\n    <br>\r\n    <p>This version was generated on <strong>");
+                    "     <i class=\"fas fa-question-circle\" style=\"margin-left: 2.5px;\"></i> About\r\n " +
+                    "               </div>\r\n            </div>\r\n\r\n        </div>\r\n\r\n\r\n  <div class=\"j" +
+                    "umbotron bg-dark\">\r\n    <h1>About</h1>\r\n    <p>Hello! I\'m Harry, this is where I" +
+                    " park the pictures I can stand to show other people. My main site is <a href=\"ht" +
+                    "tp://www.ishani.org/\" target=\"_blank\">over yonder</a>. I also keep a small stash" +
+                    " of images on <a href=\"http://500px.com/ishani\" target=\"_blank\">500px</a>.</p>\r\n" +
+                    "    <p>Currently I use an <strong>Olympus PEN-F</strong>, a small bag of lenses " +
+                    "and <strong>DxO PhotoLab</strong>. Previously: Lightroom, Olympus E-M1, Panasoni" +
+                    "c GX1, GF1, Canon 50D, 400D, 300D, 1000F, darkroom.</p>\r\n    <br>\r\n    <p>This g" +
+                    "allery is generated offline by my own bespoke C# app - <strong>Vanity</strong>, " +
+                    "<a href=\"https://github.com/ishani/Vanity\" target=\"_blank\">source on GitHub</a> " +
+                    "- and statically served. Server synchrony is maintained with the excellent <a hr" +
+                    "ef=\"http://www.2brightsparks.com/syncback/syncback-hub.html\" target=\"_blank\">Syn" +
+                    "cBack</a>. The client code uses <a href=\"http://getbootstrap.com/\" target=\"_blan" +
+                    "k\">Bootstrap 4</a> and <a href=\"http://photoswipe.com/\" target=\"_blank\">Photoswi" +
+                    "pe</a>. HTML is minified using <a href=\"https://github.com/2xmax/System.Web.Stat" +
+                    "icOptimization\" target=\"_blank\">Zeta</a>.</p>\r\n    <br>\r\n    <p>This version was" +
+                    " generated on <strong>");
             
             #line 35 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TAboutPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString("MMMM dd, yyyy")));

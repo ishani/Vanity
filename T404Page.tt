@@ -18,7 +18,7 @@
                 <div class="col-6">
                 </div>
                 <div class="col">
-                    <a href="/about.html"><i class="fas fa-question-circle"></i> About</a>
+                    <a href="/about.html"><i class="fas fa-question-circle" style="margin-left: 2.5px;"></i> About</a>
                 </div>
             </div>
 

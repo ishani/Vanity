@@ -18,7 +18,7 @@
                 <div class="col-6">
                 </div>
                 <div class="col text-muted">
-                    <i class="fas fa-question-circle"></i> About
+                    <i class="fas fa-question-circle" style="margin-left: 2.5px;"></i> About
                 </div>
             </div>
 

@@ -50,18 +50,17 @@ namespace Vanity
 
         <meta name=""viewport"" content=""width=device-width, minimum-scale=1, maximum-scale=1""/>
         <meta name=""twitter:card"" content=""summary"">
-        <meta name=""twitter:domain"" content=""photography.ishani.org""/>
         <meta name=""og:type"" content=""website"" />
         <meta name=""og:title"" content=""Photography by Harry Denholm - ");
             
-            #line 24 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 23 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPageTitle));
             
             #line default
             #line hidden
             this.Write("\" />\r\n\r\n        <title>Ishani\'s Gallery &middot; ");
             
-            #line 26 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 25 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPageTitle));
             
             #line default
@@ -83,7 +82,7 @@ namespace Vanity
         <!-- local CSS -->
         <link rel=""stylesheet"" type=""text/css"" href=""/_assets/css/local.css?v=");
             
-            #line 41 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 40 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mVersion));
             
             #line default
@@ -127,7 +126,7 @@ namespace Vanity
                     <div class=""col-6"">
                     </div>
                     <div class=""col"">
-                        <a href=""/about.html""><i class=""fas fa-question-circle""></i> About</a>
+                        <a href=""/about.html""><i class=""fas fa-question-circle"" style=""margin-left: 2.5px;""></i> About</a>
                     </div>
                 </div>
 
@@ -212,7 +211,7 @@ namespace Vanity
             #line default
             #line hidden
             this.Write(@"                    <div class=""page-title text-uppercase text-info"">
-                        Ishani · Gallery
+                        Ishani <span class=""d-none d-sm-inline"">·</span> Gallery
                     </div>                
                     <i>Photography by Harry Denholm. All images <a target=""_blank"" rel=""license"" href=""http://creativecommons.org/licenses/by-nc-nd/4.0/"">CC-BY-NC-ND</a>.</i>
                 ");
@@ -244,14 +243,14 @@ namespace Vanity
             
             #line default
             #line hidden
-            this.Write(" <i>");
+            this.Write(" <div class=\"album-subdesc\"><i>");
             
             #line 80 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mAlbum.mMetadataDescription));
             
             #line default
             #line hidden
-            this.Write("</i> <br> ");
+            this.Write("</i></div> ");
             
             #line 80 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
  } 
@@ -300,10 +299,11 @@ namespace Vanity
             
             #line default
             #line hidden
-            this.Write("\r\n\r\n            </div>\r\n\r\n\r\n");
+            this.Write("\r\n\r\n            </div>\r\n\r\n");
             
-            #line 89 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
-	Int32 albumCount = mAlbum.mOrderedAlbums.Count();
+            #line 88 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+
+    Int32 albumCount = mAlbum.mOrderedAlbums.Count();
     Boolean shouldPad = albumCount < 4 && (albumCount % 4 ) != 0;
 
     if (albumCount > 0 ) { 
@@ -407,10 +407,34 @@ namespace Vanity
             
             #line default
             #line hidden
-            this.Write("\r\n\r\n\r\n\r\n\r\n            <div class=\"card-columns\">\r\n                <div class=\"my-" +
-                    "gallery\" itemscope itemtype=\"http://schema.org/ImageGallery\">\r\n\r\n");
+            this.Write("\r\n\r\n    ");
             
-            #line 128 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 122 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+	String gfyCat = mAlbum.mGfyCatIntro;
+        if (gfyCat.Length > 0) { 
+            
+            #line default
+            #line hidden
+            this.Write("            <div class=\'gfydiv\'>\r\n            <div style=\'position:relative;paddi" +
+                    "ng-bottom:54%\'><iframe src=\'https://gfycat.com/ifr/");
+            
+            #line 125 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(gfyCat));
+            
+            #line default
+            #line hidden
+            this.Write("\' frameborder=\'0\' scrolling=\'no\' width=\'100%\' height=\'100%\' style=\'position:absol" +
+                    "ute;top:0;left:0\' allowfullscreen></iframe></div>\r\n            </div>\r\n    ");
+            
+            #line 127 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\r\n            <div class=\"card-columns\">\r\n                <div class=\"my-galler" +
+                    "y\" itemscope itemtype=\"http://schema.org/ImageGallery\">\r\n\r\n");
+            
+            #line 133 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
  foreach (Photograph item in mAlbum.mPhotos) { 
             
             #line default
@@ -418,49 +442,49 @@ namespace Vanity
             this.Write("\r\n                    <div class=\"card pic-card\">\r\n                        <a hre" +
                     "f=\"");
             
-            #line 131 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 136 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPhotoRootURL));
             
             #line default
             #line hidden
             this.Write("/full/");
             
-            #line 131 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 136 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.mHashedPath));
             
             #line default
             #line hidden
             this.Write(".jpg\" itemprop=\"contentUrl\" data-size=\"");
             
-            #line 131 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 136 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.mImageWidth));
             
             #line default
             #line hidden
             this.Write("x");
             
-            #line 131 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 136 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.mImageHeight));
             
             #line default
             #line hidden
             this.Write("\">\r\n                            <img class=\"card-img-top\" src=\"");
             
-            #line 132 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 137 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPhotoRootURL));
             
             #line default
             #line hidden
             this.Write("/thumb/");
             
-            #line 132 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 137 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.mHashedPath));
             
             #line default
             #line hidden
             this.Write(".jpg\" alt=\"");
             
-            #line 132 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 137 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(item.mPrettyName));
             
             #line default
@@ -468,7 +492,7 @@ namespace Vanity
             this.Write("\" itemprop=\"thumbnail\">\r\n                        </a>\r\n                    </div>" +
                     "\r\n\r\n");
             
-            #line 136 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
+            #line 141 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TGalleryPage.tt"
  } // end of foreach  
             
             #line default

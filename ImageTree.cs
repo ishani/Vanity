@@ -35,6 +35,8 @@ namespace Vanity
         public String mPrettyName = String.Empty;
         public String mPrettyNameWithYear = String.Empty;
 
+        public String mGfyCatIntro = String.Empty;
+
         public String mMetadataJSON = String.Empty;
         public dynamic mMetadata = null;
 
@@ -61,8 +63,8 @@ namespace Vanity
     {
         public enum Constants
         {
-            ThumbnailWidth = 640,
-            AlbumThumbnailHeight = 480
+            ThumbnailWidth = 520,
+            AlbumThumbnailHeight = 390
         };
 
         public AlbumFolder mRootAlbum { get; private set; }
@@ -82,7 +84,7 @@ namespace Vanity
         public Int32 mImageCount = 0;
 
         // -----------------------------------------------------------------------------------------------------------------
-        public ImageTree(String basePath, String photoOutputPath)
+        public ImageTree(String basePath, String photoOutputPath, bool alwaysRebuildThumbnails)
         {
             mBasePath = basePath;
             {
@@ -103,20 +105,22 @@ namespace Vanity
 
                 System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
 
-                mJPEGEncoderParameters = new EncoderParameters(1);
-                EncoderParameter qualityParameter = new EncoderParameter(myEncoder, 90L);
-                mJPEGEncoderParameters.Param[0] = qualityParameter;
+                mJPEGEncoderParameters = new EncoderParameters(3);
+                mJPEGEncoderParameters.Param[0] = new EncoderParameter(myEncoder, 80L);
+                mJPEGEncoderParameters.Param[1] = new EncoderParameter(System.Drawing.Imaging.Encoder.ScanMethod, (int)EncoderValue.ScanMethodInterlaced);
+                mJPEGEncoderParameters.Param[2] = new EncoderParameter(System.Drawing.Imaging.Encoder.RenderMethod, (int)EncoderValue.RenderProgressive);
+
             }
 
             mRootAlbum = null;
 
-            WalkDirectoryTree(basePath, ref mImageCount);
+            WalkDirectoryTree(basePath, ref mImageCount, alwaysRebuildThumbnails);
 
             Console.WriteLine("Images Gathered: " + mImageCount);
         }
 
         // -----------------------------------------------------------------------------------------------------------------
-        void WalkDirectoryTree(String root, ref Int32 mImageCount)
+        void WalkDirectoryTree(String root, ref Int32 mImageCount, bool alwaysRebuildThumbnails)
         {
             char[] pathSplits = new char[] { '\\', '/' };
 
@@ -157,10 +161,28 @@ namespace Vanity
                         try { if (newAlbumFolder.mMetadata.name != null) newAlbumFolder.mPrettyName = newAlbumFolder.mMetadata.name; } catch (Exception) { }
                         try { if (newAlbumFolder.mMetadata.cam != null) newAlbumFolder.mCamera = newAlbumFolder.mMetadata.cam; } catch (Exception) { }
                         try { if (newAlbumFolder.mMetadata.year != null) newAlbumFolder.mYear = newAlbumFolder.mMetadata.year; } catch (Exception) { }
+                        try { if (newAlbumFolder.mMetadata.gfycat != null) newAlbumFolder.mGfyCatIntro = newAlbumFolder.mMetadata.gfycat; } catch (Exception) { }
                     }
 
+                    bool buildPrettyWithYear = true;
+
+                    // inherit Year and Camera from parent?
+                    if (newAlbumFolder.mParentAlbum != null)
+                    {
+                        if (newAlbumFolder.mYear == 0 && newAlbumFolder.mParentAlbum.mYear > 0)
+                        {
+                            newAlbumFolder.mYear = newAlbumFolder.mParentAlbum.mYear;
+                            buildPrettyWithYear = false;
+                        }
+                        if (newAlbumFolder.mCamera.Length == 0 && newAlbumFolder.mParentAlbum.mCamera.Length > 0)
+                        {
+                            newAlbumFolder.mCamera = newAlbumFolder.mParentAlbum.mCamera;
+                        }
+                    }
+
+
                     newAlbumFolder.mPrettyNameWithYear = newAlbumFolder.mPrettyName;
-                    if (newAlbumFolder.mYear > 0 )
+                    if (newAlbumFolder.mYear > 0 && buildPrettyWithYear)
                     {
                         newAlbumFolder.mPrettyNameWithYear = string.Format("{0} {1}", newAlbumFolder.mPrettyName, newAlbumFolder.mYear);
                     }
@@ -215,7 +237,7 @@ namespace Vanity
                             File.Delete(shaTestTemp);
                         }
 
-                        if (generateNewThumbnail)
+                        if (generateNewThumbnail || alwaysRebuildThumbnails)
                         {
                             Console.WriteLine(" ~ generating new album thumbnail");
                             repImageThumb.Save(outAlbumThumbPath, mJPEGEncoder, mJPEGEncoderParameters);
@@ -254,6 +276,8 @@ namespace Vanity
 
             if (files != null)
             {
+                bool shouldLineBreak = false;
+
                 foreach (FileInfo fi in files)
                 {
                     // steal the nearest file's modified time for the album, used in sitemap gen
@@ -308,13 +332,18 @@ namespace Vanity
 
                     if (doProcessImage)
                     {
-                        Image thumbImageData = Utils.GenerateThumbnail(originalImageData, (Int32)Constants.ThumbnailWidth);
-                        thumbImageData.Save(outThumbPath, mJPEGEncoder, mJPEGEncoderParameters);
-
                         File.Copy(fi.FullName, outFullPath, true);
                         Console.Write(".");
+                        shouldLineBreak = true;
+                    }
 
-                        thumbImageData.Dispose();
+                    // regenerate thumbnail?
+                    if ( doProcessImage || !File.Exists(outThumbPath) || alwaysRebuildThumbnails)
+                    {
+                        using (Image thumbImageData = Utils.GenerateThumbnail(originalImageData, (Int32)Constants.ThumbnailWidth))
+                            thumbImageData.Save(outThumbPath, mJPEGEncoder, mJPEGEncoderParameters);                        
+
+                        Utils.jpegOptimFile(outThumbPath);
                     }
 
                     originalImageData.Dispose();
@@ -329,11 +358,12 @@ namespace Vanity
                     mImageCount++;
                 }
 
-                Console.Write(Environment.NewLine);
+                if (shouldLineBreak)
+                    Console.WriteLine();
 
                 foreach (DirectoryInfo dirInfo in subDirs)
                 {
-                    WalkDirectoryTree(dirInfo.FullName, ref mImageCount);
+                    WalkDirectoryTree(dirInfo.FullName, ref mImageCount, alwaysRebuildThumbnails);
                 }
 
                 if (currentAlbum.mOrderedAlbums == null)
@@ -348,14 +378,19 @@ namespace Vanity
                     {
                         if (currentAlbum.mMetadata.order is Newtonsoft.Json.Linq.JArray)
                         {
-                            Console.WriteLine("Custom Order: ");
+                            Console.WriteLine("    Custom Order: ");
                             var subAlbumList = new Dictionary<String, AlbumFolder>(currentAlbum.mSubAlbums);
 
                             albumList.Clear();
                             foreach (var pair in currentAlbum.mMetadata.order)
                             {
                                 String albumName = pair.ToString();
-                                Console.WriteLine(" - " + albumName);
+                                Console.WriteLine("     - " + albumName);
+
+                                if ( !subAlbumList.ContainsKey(albumName) )
+                                {
+                                    Console.WriteLine("Error: cannot find specified album at this level: " + albumName);
+                                }
 
                                 albumList.Add(subAlbumList[albumName]);
                                 subAlbumList.Remove(albumName);
@@ -369,7 +404,7 @@ namespace Vanity
                     }
                     catch (KeyNotFoundException knfe)
                     {
-                        Console.WriteLine(knfe.Message + Environment.NewLine + knfe.Data);
+                        Console.WriteLine(Environment.NewLine + knfe.Message + Environment.NewLine + knfe.StackTrace );
                         Environment.Exit(-1);
                     }
                     catch (Exception)

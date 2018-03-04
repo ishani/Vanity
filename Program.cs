@@ -7,16 +7,18 @@ namespace Vanity
 {
     abstract class Settings
     {
-        public static string AssetsRootURL = "http://assets.ishani.org/ph3";
+        public static string RootURL = "http://photography.ishani.org/";
+
+        public static Int32  AssetReqVersion = (new Random()).Next(9999);
     }
 
     // -------------------------------------------------------------------------------------------------------------------
     partial class TGalleryPage
     {
+        private String mRootURL;
         private String mPageTitle;
 
         private AlbumFolder mAlbum;
-        private String mAssetsRootURL;
         private String mGalleryRootURL;
         private String mPhotoRootURL;
 
@@ -24,11 +26,12 @@ namespace Vanity
 
         public TGalleryPage(AlbumFolder album)
         {
+            mRootURL = Settings.RootURL;
+
             mPageTitle = album.mPrettyName;
 
-            mVersion = (new Random()).Next(5000);
+            mVersion = Settings.AssetReqVersion;
 
-            mAssetsRootURL = Settings.AssetsRootURL;
             mGalleryRootURL = "/";
 
             mPhotoRootURL = mGalleryRootURL + "_photo";
@@ -39,44 +42,38 @@ namespace Vanity
     // -------------------------------------------------------------------------------------------------------------------
     partial class TAboutPage
     {
+        private String mRootURL;
         private String mPageTitle;
-
-        private String mAssetsRootURL;
-        private String mGalleryRootURL;
 
         private Int32 mImageCount;
         private Int32 mVersion;
 
         public TAboutPage(Int32 imageCount)
         {
+            mRootURL = Settings.RootURL;
+
             mPageTitle = "About";
 
-            mVersion = (new Random()).Next(5000);
+            mVersion = Settings.AssetReqVersion;
             mImageCount = imageCount;
-
-            mAssetsRootURL = Settings.AssetsRootURL;
-            mGalleryRootURL = "/";
         }
     }
 
     // -------------------------------------------------------------------------------------------------------------------
     partial class T404Page
     {
+        private String mRootURL;
         private String mPageTitle;
-
-        private String mAssetsRootURL;
-        private String mGalleryRootURL;
 
         private Int32 mVersion;
 
         public T404Page()
         {
+            mRootURL = Settings.RootURL;
+
             mPageTitle = "404";
 
-            mVersion = (new Random()).Next(5000);
-
-            mAssetsRootURL = Settings.AssetsRootURL;
-            mGalleryRootURL = "/";
+            mVersion = Settings.AssetReqVersion;
         }
     }
 
@@ -89,6 +86,8 @@ namespace Vanity
         static String argAssets = null;
         [CommandLineArgumentAttribute("out")]
         static String argPathOut = null;
+        [CommandLineArgumentAttribute("opt")]
+        static String argOpts = null;
 
         static ZetaHtmlCompressor.HtmlContentCompressor HtmlCompressor = new ZetaHtmlCompressor.HtmlContentCompressor();
 
@@ -109,7 +108,7 @@ namespace Vanity
 
             sitemap.Add(new Location()
             {
-                Url = "http://photography.ishani.org/" + albumFolder.mRelativeRoot.Replace("\\", "/"),
+                Url = Settings.RootURL + albumFolder.mRelativeRoot.Replace("\\", "/"),
                 ChangeFrequency = Location.eChangeFrequency.monthly,
                 LastModified = albumFolder.mLastModified
             }
@@ -141,6 +140,15 @@ namespace Vanity
                 return;
             }
 
+            bool alwaysRebuildThumbnails = false;
+            if (argOpts != null )
+            {
+                if (argOpts.Contains("rebuild"))
+                {
+                    Console.WriteLine(">>> REBUILDING THUMBNAILS");
+                    alwaysRebuildThumbnails = true;
+                }
+            }
 
             String dataInputPath = Path.GetFullPath(argPathIn);
 
@@ -171,7 +179,7 @@ namespace Vanity
 
 
                 Console.WriteLine("Gathering gallery data...");
-                ImageTree imageTree = new ImageTree(dataInputPath, photoOutputPath);
+                ImageTree imageTree = new ImageTree(dataInputPath, photoOutputPath, alwaysRebuildThumbnails);
 
                 imageTree.mRootAlbum.mName =
                   imageTree.mRootAlbum.mPrettyName = "Home";
@@ -205,10 +213,10 @@ namespace Vanity
                 // robots.txt
                 {
                     string robotsPath = Path.GetFullPath(argPathOut + "\\robots.txt");
-                    string robotsTxt = @"
+                    string robotsTxt = string.Format(@"
 User-agent: *
 Allow: /
-Sitemap: http://photography.ishani.org/sitemap.xml";
+Sitemap: {0}sitemap.xml", Settings.RootURL);
 
                     File.WriteAllText(robotsPath, robotsTxt);
                 }
@@ -226,7 +234,7 @@ Sitemap: http://photography.ishani.org/sitemap.xml";
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error during image gathering : " + ex.Message);
+                Console.WriteLine("Error during image gathering : " + ex.Message + "\n" + ex.StackTrace);
                 return;
             }
         }

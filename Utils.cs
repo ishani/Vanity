@@ -45,7 +45,7 @@ namespace Vanity
         static public void jpegOptimFile(string file)
         {
             StringBuilder jpegArgs = new StringBuilder();
-            jpegArgs.Append(" --strip-com --strip-exif -t -p ");
+            jpegArgs.Append(" --strip-com --strip-exif -p -q ");
             jpegArgs.Append("\"");
             jpegArgs.Append(file);
             jpegArgs.Append("\"");
@@ -60,7 +60,7 @@ namespace Vanity
             startInfo.RedirectStandardOutput = true;
 
             p.StartInfo = startInfo;
-            p.OutputDataReceived += (sender, args) => Console.WriteLine("#> {0}", args.Data);
+            p.OutputDataReceived += (sender, args) => { if (args.Data != null && args.Data.Length > 0) Console.WriteLine("#> {0}", args.Data); };
 
             p.Start();
             p.BeginOutputReadLine();

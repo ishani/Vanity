@@ -50,18 +50,17 @@ namespace Vanity
 
         <meta name=""viewport"" content=""width=device-width, minimum-scale=1, maximum-scale=1""/>
         <meta name=""twitter:card"" content=""summary"">
-        <meta name=""twitter:domain"" content=""photography.ishani.org""/>
         <meta name=""og:type"" content=""website"" />
         <meta name=""og:title"" content=""Photography by Harry Denholm - ");
             
-            #line 24 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 23 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPageTitle));
             
             #line default
             #line hidden
             this.Write("\" />\r\n\r\n        <title>Ishani\'s Gallery &middot; ");
             
-            #line 26 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 25 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mPageTitle));
             
             #line default
@@ -83,7 +82,7 @@ namespace Vanity
         <!-- local CSS -->
         <link rel=""stylesheet"" type=""text/css"" href=""/_assets/css/local.css?v=");
             
-            #line 41 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
+            #line 40 "S:\Dev\Web\IO4\photography.ishani.org\Vanity\TCommonHeader.html"
             this.Write(this.ToStringHelper.ToStringWithCulture(mVersion));
             
             #line default
@@ -103,7 +102,7 @@ namespace Vanity
                 <div class=""col-6"">
                 </div>
                 <div class=""col"">
-                    <a href=""/about.html""><i class=""fas fa-question-circle""></i> About</a>
+                    <a href=""/about.html""><i class=""fas fa-question-circle"" style=""margin-left: 2.5px;""></i> About</a>
                 </div>
             </div>
 
