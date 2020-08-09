@@ -77,10 +77,10 @@
                     </div>
                 <# } #> 
 
-                <# if (mAlbum.mMetadataDescription.Length > 0) { #> <div class="album-subdesc"><i><#= mAlbum.mMetadataDescription #></i></div> <# } #>
+                <# if ( mAlbum.mMetadataDescription.Length > 0 ) { #> <div class="album-subdesc"><i><#= mAlbum.mMetadataDescription #></i></div> <# } #>
 
-                <# if (mAlbum.mYear > 0) { #> <span class="badge badge-light"><#= mAlbum.mYear #></span> <# } #>
-                <# if (mAlbum.mCamera.Length > 0) { #> <span class="badge badge-light"><#= mAlbum.mCamera #></span> <# } #>
+                <# if ( mAlbum.mYear > 0 ) { #> <span class="badge badge-light"><#= mAlbum.mYear #></span> <# } #>
+                <# if ( !string.IsNullOrEmpty( mAlbum.mCamera ) ) { #> <span class="badge badge-light"><#= mAlbum.mCamera #></span> <# } #>
 
 
             </div>
@@ -97,17 +97,24 @@
                 <# if (shouldPad) { #> <div class="col-lg"></div> <# } #>
 
 <# foreach (var subAlbum in mAlbum.mOrderedAlbums) { #>
-     
+
+<#     if ( subAlbum.HasPhotosOrSubAlbums() ) { #>
+
                 <div class="col-md-6 col-lg-3">
                     <div class="card pic-card album-card">
                         <a href="<#= mGalleryRootURL #><#= subAlbum.mRelativeRootHTML #>" itemprop="contentUrl" style="height:100%">
-                            <img class="card-img-top" src="<#= mPhotoRootURL #>/album/<#= subAlbum.mHashedRep #>.jpg" alt="<#= subAlbum.mPrettyNameWithYear #>" itemprop="thumbnail">
+                            <img class="card-img-top card-img-in-album" 
+                                src="<#= mPhotoRootURL #>/album/<#= subAlbum.mHashedRep #>.jpg" 
+                                alt="<#= subAlbum.mPrettyNameWithYear #>" 
+                                itemprop="thumbnail">
                         </a>
                         <div class="album-footer">
                             <i class="fas fa-images"></i> <#= subAlbum.mPrettyNameWithYear #>
                         </div>
                     </div>
                 </div>
+
+<#     } // end of if-has-photos #>
 
 <# } // end of foreach  #>
 
@@ -120,9 +127,9 @@
 
 
     <#	String gfyCat = mAlbum.mGfyCatIntro;
-        if (gfyCat.Length > 0) { #>
+        if ( !string.IsNullOrEmpty(gfyCat) ) { #>
             <div class='gfydiv'>
-            <div style='position:relative;padding-bottom:54%'><iframe src='https://gfycat.com/ifr/<#= gfyCat #>' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0' allowfullscreen></iframe></div>
+            <div style='position:relative;padding-bottom:54%'><iframe src='https://gfycat.com/ifr/search/<#= gfyCat #>?hd=1' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0' allowfullscreen></iframe></div>
             </div>
     <# } #>
 

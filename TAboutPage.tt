@@ -27,10 +27,10 @@
 
   <div class="jumbotron bg-dark">
     <h1>About</h1>
-    <p>Hello! I'm Harry, this is where I park the pictures I can stand to show other people. My main site is <a href="http://www.ishani.org/" target="_blank">over yonder</a>. I also keep a small stash of images on <a href="http://500px.com/ishani" target="_blank">500px</a>.</p>
+    <p>Hello! I'm Harry, this is where I park the pictures I can stand to show other people. My main site is <a href="http://www.ishani.org/" target="_blank">over yonder</a>.</p>
     <p>Currently I use an <strong>Olympus PEN-F</strong>, a small bag of lenses and <strong>DxO PhotoLab</strong>. Previously: Lightroom, Olympus E-M1, Panasonic GX1, GF1, Canon 50D, 400D, 300D, 1000F, darkroom.</p>
     <br>
-    <p>This gallery is generated offline by my own bespoke C# app - <strong>Vanity</strong>, <a href="https://github.com/ishani/Vanity" target="_blank">source on GitHub</a> - and statically served. Server synchrony is maintained with the excellent <a href="http://www.2brightsparks.com/syncback/syncback-hub.html" target="_blank">SyncBack</a>. The client code uses <a href="http://getbootstrap.com/" target="_blank">Bootstrap 4</a> and <a href="http://photoswipe.com/" target="_blank">Photoswipe</a>. HTML is minified using <a href="https://github.com/2xmax/System.Web.StaticOptimization" target="_blank">Zeta</a>.</p>
+    <p>This gallery is generated offline by my own bespoke C# app - <strong>Vanity</strong>, <a href="https://github.com/ishani/Vanity" target="_blank">source on GitHub</a> - and statically served. Server synchrony is maintained with the excellent <a href="http://www.2brightsparks.com/syncback/syncback-hub.html" target="_blank">SyncBack</a>. The client code uses <a href="http://getbootstrap.com/" target="_blank">Bootstrap 4</a> and <a href="http://photoswipe.com/" target="_blank">Photoswipe</a>. HTML is minified using <a href="https://github.com/UweKeim/ZetaProducerHtmlCompressor" target="_blank">Zeta</a>.</p>
     <br>
     <p>This version was generated on <strong><#= DateTime.Now.ToString("MMMM dd, yyyy") #></strong>, processing <strong><#= mImageCount #></strong> images.</p>
     <br>

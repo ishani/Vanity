@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Vanity
 {
-    [XmlRoot("urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")]
+    [XmlRoot( "urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9" )]
     public class Sitemap
     {
         [XmlElement("url")]
@@ -15,9 +15,9 @@ namespace Vanity
             mLocations.Clear();
         }
 
-        public void Add(Location item)
+        public void Add( Location item )
         {
-            mLocations.Add(item);
+            mLocations.Add( item );
         }
     }
 
@@ -35,18 +35,18 @@ namespace Vanity
             never
         }
 
-        [XmlElement("loc")]
+        [XmlElement( "loc" )]
         public string Url { get; set; }
 
-        [XmlElement("changefreq")]
+        [XmlElement( "changefreq" )]
         public eChangeFrequency? ChangeFrequency { get; set; }
         public bool ShouldSerializeChangeFrequency() { return ChangeFrequency.HasValue; }
 
-        [XmlElement("lastmod")]
+        [XmlElement( "lastmod" )]
         public DateTime? LastModified { get; set; }
         public bool ShouldSerializeLastModified() { return LastModified.HasValue; }
 
-        [XmlElement("priority")]
+        [XmlElement( "priority" )]
         public double? Priority { get; set; }
         public bool ShouldSerializePriority() { return Priority.HasValue; }
     }
