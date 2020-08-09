@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vanity</RootNamespace>
     <AssemblyName>Vanity</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
@@ -54,15 +54,14 @@
     <ApplicationIcon>Vanity.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExifLib">
-      <HintPath>packages\ExifLib.1.6.2.0\lib\net45\ExifLib.dll</HintPath>
+    <Reference Include="ExifLib, Version=1.7.0.0, Culture=neutral, PublicKeyToken=30284005913968db, processorArchitecture=MSIL">
+      <HintPath>packages\ExifLib.1.7.0.0\lib\net45\ExifLib.dll</HintPath>
     </Reference>
-    <Reference Include="Kaliko.ImageLibrary">
-      <HintPath>packages\ImageLibrary.2.0.0\lib\Kaliko.ImageLibrary.dll</HintPath>
+    <Reference Include="Kaliko.ImageLibrary, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ImageLibrary.3.0.2\lib\net45\Kaliko.ImageLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,8 +72,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ZetaHtmlCompressor">
-      <HintPath>external\ZetaHtmlCompressor.dll</HintPath>
+    <Reference Include="ZetaProducerHtmlCompressor, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ZetaProducerHtmlCompressor.1.0.3\lib\net40-full\ZetaProducerHtmlCompressor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

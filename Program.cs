@@ -89,11 +89,13 @@ namespace Vanity
         [CommandLineArgumentAttribute("opt")]
         static String argOpts = null;
 
-        static ZetaHtmlCompressor.HtmlContentCompressor HtmlCompressor = new ZetaHtmlCompressor.HtmlContentCompressor();
+        static ZetaProducerHtmlCompressor.HtmlContentCompressor HtmlCompressor = new ZetaProducerHtmlCompressor.HtmlContentCompressor();
 
         static void Process(AlbumFolder albumFolder, Sitemap sitemap)
         {
             TGalleryPage genPage = new TGalleryPage(albumFolder);
+
+            Console.WriteLine( " --> " + albumFolder.mRelativeRoot );
 
             string outputHTML = genPage.TransformText();
             outputHTML = HtmlCompressor.Compress(outputHTML);
@@ -108,11 +110,10 @@ namespace Vanity
 
             sitemap.Add(new Location()
             {
-                Url = Settings.RootURL + albumFolder.mRelativeRoot.Replace("\\", "/"),
+                Url             = Settings.RootURL + albumFolder.mRelativeRoot.Replace("\\", "/"),
                 ChangeFrequency = Location.eChangeFrequency.monthly,
-                LastModified = albumFolder.mLastModified
-            }
-            );
+                LastModified    = albumFolder.mLastModified
+            });
 
             foreach (var subAlbum in albumFolder.mOrderedAlbums)
             {
@@ -122,7 +123,7 @@ namespace Vanity
 
         static void Main(string[] args)
         {
-            CLA.run(typeof(Program), args);
+            CLA.Run(typeof(Program), args);
 
             if (argPathIn == null)
             {
