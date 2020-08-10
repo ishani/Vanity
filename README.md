@@ -1,16 +1,21 @@
 # Vanity
-Static site generator for my photography gallery, [photography.ishani.org](http://photography.ishani.org)
+
+After many years of hosting photography on 3rd party sites, subject to their cluttered designs, overbearing social mechanisms and occasionally questionable licences - I decided to go it alone and host my own work with no mess, no distractions. 
+
+Vanity produces a lean, compact, static website where the focus is solely on the images.
+
+I use it for my own gallery, [photography.ishani.org](http://photography.ishani.org), but it wouldn't be difficult to bend into another shape should you want to use it for your own.
 
 ![Demo image 1](https://raw.githubusercontent.com/ishani/Vanity/master/doc/vanity_1.jpg)
 
+## Features
+Vanity accepts an arbitrarily-deep folder hierarchy of images, per-gallery JSON configuration metadata and produces high-quality thumbnails and a set of minified HTML files using T4 templating.
+
 ![Demo image 2](https://raw.githubusercontent.com/ishani/Vanity/master/doc/vanity_2.jpg)
 
-### Features
-Vanity accepts an arbitrarily-deep folder hierarchy of images, per-gallery JSON configuration metadata and produces high-quality thumbnails and a set of lean, minified HTML files using T4 templating.
+The theme uses Bootstrap 4 and [PhotoSwipe](https://github.com/dimsemenov/PhotoSwipe) to provide a minimalist interface that works on any device.
 
-The theme uses Bootstrap 4 and PhotoSwipe to provide a pretty, modern, reactive interface with a focus on the photographs rather than adding too much other cruft.
+Vanity uses _jpegoptim64_ to strip and pack resulting JPEGs. It doesn't change any of the input images.
 
-Vanity uses jpegoptim64.exe to strip and pack resulting JPEGs. It doesn't change any of the input images.
-
-### Modding
-While it has some optimisation and caching built in, there's likely a bunch of quirks and bugs in there; I've never really expected others to try and use it for their own work, even though it probably wouldn't be hard to re-theme (3 .tt files)
+## Modding
+It's somewhat optimised (doesn't do work if it can avoid it) and pretty well tested (in use for over 3 years now) but YMMV - to customize it, you can fiddle with the 3 T4 files and single stylesheet fairly easily.
