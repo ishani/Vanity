@@ -77,21 +77,21 @@ namespace Vanity
             AlbumThumbnailHeight = 390
         };
 
-        public AlbumFolder         mRootAlbum             { get; private set; }
-        public string              mBasePath              { get; private set; }
+        public AlbumFolder                  mRootAlbum             { get; private set; }
+        public readonly string              mBasePath;
 
-        public string              mPhotoOutputRoot       { get; private set; }
+        public readonly string              mPhotoOutputRoot;
 
-        public string              mPhotoOutputFull       { get; private set; }
-        public string              mPhotoOutputThumb      { get; private set; }
-        public string              mPhotoOutputAlbumThumb { get; private set; }
+        public readonly string              mPhotoOutputFull;
+        public readonly string              mPhotoOutputThumb;
+        public readonly string              mPhotoOutputAlbumThumb;
 
-        Dictionary<string, string> mUniqueHashCheck = new Dictionary<string, string>(1024);
+        private readonly Dictionary<string, string>  mUniqueHashCheck = new Dictionary<string, string>(1024);
 
-        ImageCodecInfo             mJPEGEncoder;
-        EncoderParameters          mJPEGEncoderParameters;
+        private readonly ImageCodecInfo     mJPEGEncoder;
+        private readonly EncoderParameters  mJPEGEncoderParameters;
 
-        public Int32               mImageCount;
+        public Int32                        mImageCount;
 
 
         // -----------------------------------------------------------------------------------------------------------------
@@ -130,7 +130,7 @@ namespace Vanity
         }
 
         // -----------------------------------------------------------------------------------------------------------------
-        void WalkDirectoryTree( string root, ref Int32 mImageCount, bool alwaysRebuildThumbnails )
+        private void WalkDirectoryTree( string root, ref Int32 mImageCount, bool alwaysRebuildThumbnails )
         {
             char[] pathSplits = new char[] { '\\', '/' };
 
@@ -146,19 +146,20 @@ namespace Vanity
             {
                 AlbumFolder newAlbumFolder = null;
 
-                if ( currentAlbum != null &&
-                    currentAlbum.mSubAlbums.ContainsKey( pathBit ) )
+                if ( currentAlbum?.mSubAlbums.ContainsKey( pathBit ) == true )
                 {
                     newAlbumFolder = currentAlbum.mSubAlbums[pathBit];
                 }
                 else
                 {
-                    newAlbumFolder = new AlbumFolder();
-                    newAlbumFolder.mParentAlbum = currentAlbum;
-                    newAlbumFolder.mRelativeRoot = relativeRoot;
-                    newAlbumFolder.mRelativeRootHTML = newAlbumFolder.mRelativeRoot.Replace( "\\", "/" );
-                    newAlbumFolder.mName = pathBit;
-                    newAlbumFolder.mPrettyName = Utils.PrettifyName( newAlbumFolder.mName );
+                    newAlbumFolder = new AlbumFolder
+                    {
+                        mParentAlbum        = currentAlbum,
+                        mRelativeRoot       = relativeRoot,
+                        mRelativeRootHTML   = relativeRoot.Replace( "\\", "/" ),
+                        mName               = pathBit,
+                        mPrettyName         = Utils.PrettifyName( pathBit )
+                    };
 
                     string metadataPath = originalRoot + "\\metadata.json";
                     if ( File.Exists( metadataPath ) )
@@ -195,7 +196,7 @@ namespace Vanity
                     newAlbumFolder.mPrettyNameWithYear = newAlbumFolder.mPrettyName;
                     if ( newAlbumFolder.mYear > 0 && buildPrettyWithYear )
                     {
-                        newAlbumFolder.mPrettyNameWithYear = string.Format( "{0} {1}", newAlbumFolder.mPrettyName, newAlbumFolder.mYear );
+                        newAlbumFolder.mPrettyNameWithYear = $"{newAlbumFolder.mPrettyName} {newAlbumFolder.mYear}";
                     }
 
                     if ( string.IsNullOrEmpty( newAlbumFolder.mMetadataRep ) )
@@ -225,7 +226,7 @@ namespace Vanity
                         Image repImage                   = Image.FromFile(repImagePath);
                         Image repImageThumb              = Utils.GenerateAlbumThumbnail(repImage, newAlbumFolder.mAlbumThumbWidth, newAlbumFolder.mAlbumThumbHeight);
 
-                        newAlbumFolder.mHashedRep        = Utils.sha256( relativeRoot ).Substring( 0, 10 ).ToLower();
+                        newAlbumFolder.mHashedRep        = Utils.ComputeSHA256ForString( relativeRoot ).Substring( 0, 10 ).ToLower();
 
                         string outAlbumThumbPath         = mPhotoOutputAlbumThumb + newAlbumFolder.mHashedRep + ".jpg";
 
@@ -235,10 +236,10 @@ namespace Vanity
                             string shaTestTemp = mPhotoOutputAlbumThumb + newAlbumFolder.mHashedRep + "_temp_.jpg";
                             repImageThumb.Save( shaTestTemp, mJPEGEncoder, mJPEGEncoderParameters );
 
-                            Utils.jpegOptimFile( shaTestTemp );
+                            Utils.LaunchJpegOptim64( shaTestTemp );
 
-                            string sha1 = Utils.sha256ForFile(shaTestTemp);
-                            string sha2 = Utils.sha256ForFile(outAlbumThumbPath);
+                            string sha1 = Utils.ComputeSHA256ForFile(shaTestTemp);
+                            string sha2 = Utils.ComputeSHA256ForFile(outAlbumThumbPath);
 
                             if ( sha1 == sha2 )
                             {
@@ -253,7 +254,7 @@ namespace Vanity
                             Console.WriteLine( " ~ generating new album thumbnail" );
                             repImageThumb.Save( outAlbumThumbPath, mJPEGEncoder, mJPEGEncoderParameters );
 
-                            Utils.jpegOptimFile( outAlbumThumbPath );
+                            Utils.LaunchJpegOptim64( outAlbumThumbPath );
                         }
                     }
 
@@ -304,14 +305,18 @@ namespace Vanity
                         }
                     }
 
-                    Photograph imgInfo = new Photograph();
-                    imgInfo.mFI = fi;
-                    imgInfo.mDir = currentAlbum;
+                    Photograph imgInfo = new Photograph
+                    {
+                        mFI     = fi,
+                        mDir    = currentAlbum,
 
-                    imgInfo.mPrettyName = Utils.PrettifyName( Path.GetFileNameWithoutExtension( fi.FullName ) );
+                        mPrettyName     = Utils.PrettifyName( Path.GetFileNameWithoutExtension( fi.FullName ) ),
 
-                    imgInfo.mRelativePath = fi.FullName.Remove( 0, mBasePath.Length ).TrimStart( pathSplits );
-                    imgInfo.mHashedPath = Utils.sha256( imgInfo.mRelativePath ).Substring( 0, 10 ).ToLower();
+                        mRelativePath   = fi.FullName.Remove( 0, mBasePath.Length ).TrimStart( pathSplits )
+                    };
+                    imgInfo.mHashedPath = Utils.ComputeSHA256ForString( imgInfo.mRelativePath )
+                                               .Substring( 0, 10 )
+                                               .ToLower();
 
                     // keep track of any duplicates
                     if ( mUniqueHashCheck.ContainsKey( imgInfo.mHashedPath ) )
@@ -354,7 +359,7 @@ namespace Vanity
                         using ( Image thumbImageData = Utils.GenerateThumbnail( originalImageData, (Int32)Constants.ThumbnailWidth ) )
                             thumbImageData.Save( outThumbPath, mJPEGEncoder, mJPEGEncoderParameters );
 
-                        Utils.jpegOptimFile( outThumbPath );
+                        Utils.LaunchJpegOptim64( outThumbPath );
                     }
 
                     originalImageData.Dispose();
@@ -426,9 +431,9 @@ namespace Vanity
                         Console.WriteLine( Environment.NewLine + knfe.Message + Environment.NewLine + knfe.StackTrace );
                         Environment.Exit( -1 );
                     }
-                    catch ( Exception )
+                    catch ( Exception sx )
                     {
-
+                        Console.WriteLine( Environment.NewLine + sx.Message + Environment.NewLine + sx.StackTrace );
                     }
 
                     currentAlbum.mOrderedAlbums = albumList;

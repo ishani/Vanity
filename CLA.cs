@@ -31,10 +31,8 @@ namespace Vanity
                 Attribute[] attrs = Attribute.GetCustomAttributes(f);
                 foreach ( Attribute attr in attrs )
                 {
-                    if ( attr is CommandLineArgumentAttribute )
+                    if ( attr is CommandLineArgumentAttribute clattr )
                     {
-                        var clattr = (CommandLineArgumentAttribute)attr;
-
                         string nameMatch = "-" + clattr.GetName();
                         for ( var i = 0; i < args.Length; i++ )
                         {

@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace Vanity
 {
-    abstract class Settings
+    internal static class Settings
     {
         public static string RootURL = "http://photography.ishani.org/";
 
@@ -15,71 +15,64 @@ namespace Vanity
     // -------------------------------------------------------------------------------------------------------------------
     partial class TGalleryPage
     {
-        private String mRootURL;
-        private String mPageTitle;
+        private readonly String mRootURL;
+        private readonly String mPageTitle;
 
-        private AlbumFolder mAlbum;
-        private String mGalleryRootURL;
-        private String mPhotoRootURL;
+        private readonly AlbumFolder mAlbum;
+        private readonly String mGalleryRootURL;
+        private readonly String mPhotoRootURL;
 
-        private Int32 mVersion;
+        private readonly Int32 mVersion;
 
-        public TGalleryPage(AlbumFolder album)
+        public TGalleryPage( AlbumFolder album )
         {
-            mRootURL = Settings.RootURL;
-
-            mPageTitle = album.mPrettyName;
-
-            mVersion = Settings.AssetReqVersion;
-
+            mRootURL        = Settings.RootURL;
+            mPageTitle      = album.mPrettyName;
+            mVersion        = Settings.AssetReqVersion;
             mGalleryRootURL = "/";
-
-            mPhotoRootURL = mGalleryRootURL + "_photo";
-            mAlbum = album;
+            mPhotoRootURL   = mGalleryRootURL + "_photo";
+            mAlbum          = album;
         }
     }
 
     // -------------------------------------------------------------------------------------------------------------------
     partial class TAboutPage
     {
-        private String mRootURL;
-        private String mPageTitle;
+        private readonly String mRootURL;
+        private readonly String mPageTitle;
 
-        private Int32 mImageCount;
-        private Int32 mVersion;
+        private readonly Int32 mImageCount;
+        private readonly Int32 mVersion;
 
-        public TAboutPage(Int32 imageCount)
+        public TAboutPage( Int32 imageCount )
         {
-            mRootURL = Settings.RootURL;
-
-            mPageTitle = "About";
-
-            mVersion = Settings.AssetReqVersion;
-            mImageCount = imageCount;
+            mRootURL        = Settings.RootURL;
+            mPageTitle      = "About";
+            mVersion        = Settings.AssetReqVersion;
+            mImageCount     = imageCount;
         }
     }
 
     // -------------------------------------------------------------------------------------------------------------------
     partial class T404Page
     {
-        private String mRootURL;
-        private String mPageTitle;
+        private readonly String mRootURL;
+        private readonly String mPageTitle;
 
-        private Int32 mVersion;
+        private readonly Int32 mVersion;
 
         public T404Page()
         {
-            mRootURL = Settings.RootURL;
-
-            mPageTitle = "404";
-
-            mVersion = Settings.AssetReqVersion;
+            mRootURL        = Settings.RootURL;
+            mPageTitle      = "404";
+            mVersion        = Settings.AssetReqVersion;
         }
     }
 
     // -------------------------------------------------------------------------------------------------------------------
-    class Program
+    internal class Program
     {
+        // all assigned via reflection (see CLA.cs)
         [CommandLineArgumentAttribute("in")]
         static String argPathIn = null;
         [CommandLineArgumentAttribute("assets")]
@@ -89,64 +82,64 @@ namespace Vanity
         [CommandLineArgumentAttribute("opt")]
         static String argOpts = null;
 
-        static ZetaProducerHtmlCompressor.HtmlContentCompressor HtmlCompressor = new ZetaProducerHtmlCompressor.HtmlContentCompressor();
+        private static readonly ZetaProducerHtmlCompressor.HtmlContentCompressor HtmlCompressor = new ZetaProducerHtmlCompressor.HtmlContentCompressor();
 
-        static void Process(AlbumFolder albumFolder, Sitemap sitemap)
+        static void Process( AlbumFolder albumFolder, Sitemap sitemap )
         {
             TGalleryPage genPage = new TGalleryPage(albumFolder);
 
-            Console.WriteLine( " --> " + albumFolder.mRelativeRoot );
+            Console.WriteLine( $" --> {albumFolder.mRelativeRoot}" );
 
             string outputHTML = genPage.TransformText();
-            outputHTML = HtmlCompressor.Compress(outputHTML);
+            outputHTML = HtmlCompressor.Compress( outputHTML );
 
             // create directory structure
             string outputFilename = Path.GetFullPath(argPathOut + "\\" + albumFolder.mRelativeRoot + "\\");
-            Directory.CreateDirectory(outputFilename);
+            Directory.CreateDirectory( outputFilename );
             outputFilename += "index.html";
 
-            Console.WriteLine(outputFilename);
-            File.WriteAllText(outputFilename, outputHTML);
+            Console.WriteLine( outputFilename );
+            File.WriteAllText( outputFilename, outputHTML );
 
-            sitemap.Add(new Location()
+            sitemap.Add( new Location()
             {
-                Url             = Settings.RootURL + albumFolder.mRelativeRoot.Replace("\\", "/"),
+                Url = Settings.RootURL + albumFolder.mRelativeRoot.Replace( "\\", "/" ),
                 ChangeFrequency = Location.eChangeFrequency.monthly,
-                LastModified    = albumFolder.mLastModified
-            });
+                LastModified = albumFolder.mLastModified
+            } );
 
-            foreach (var subAlbum in albumFolder.mOrderedAlbums)
+            foreach ( var subAlbum in albumFolder.mOrderedAlbums )
             {
-                Process(subAlbum, sitemap);
+                Process( subAlbum, sitemap );
             }
         }
 
-        static void Main(string[] args)
+        private static void Main( string[] args )
         {
-            CLA.Run(typeof(Program), args);
+            CLA.Run( typeof( Program ), args );
 
-            if (argPathIn == null)
+            if ( argPathIn == null )
             {
-                Console.WriteLine("missing -in argument for album input path");
+                Console.WriteLine( "missing -in argument for album input path" );
                 return;
             }
-            if (argAssets == null)
+            if ( argAssets == null )
             {
-                Console.WriteLine("missing -assets argument for static assets source path");
+                Console.WriteLine( "missing -assets argument for static assets source path" );
                 return;
             }
-            if (argPathOut == null)
+            if ( argPathOut == null )
             {
-                Console.WriteLine("missing -out argument for build directory");
+                Console.WriteLine( "missing -out argument for build directory" );
                 return;
             }
 
             bool alwaysRebuildThumbnails = false;
-            if (argOpts != null )
+            if ( argOpts != null )
             {
-                if (argOpts.Contains("rebuild"))
+                if ( argOpts.Contains( "rebuild" ) )
                 {
-                    Console.WriteLine(">>> REBUILDING THUMBNAILS");
+                    Console.WriteLine( ">>> REBUILDING THUMBNAILS" );
                     alwaysRebuildThumbnails = true;
                 }
             }
@@ -154,16 +147,21 @@ namespace Vanity
             String dataInputPath = Path.GetFullPath(argPathIn);
 
             String photoOutputPath = Path.GetFullPath(argPathOut + "\\_photo\\");
-            Console.WriteLine("Output: " + photoOutputPath);
+            Console.WriteLine( $"Output: {photoOutputPath}" );
 
             try
             {
-                Console.WriteLine("Copying static assets...");
+                Console.WriteLine( "Copying static assets..." );
+
+                argAssets = Path.GetFullPath( argAssets );
+                Console.WriteLine( $" .. from {argAssets}" );
+
                 // copy static assets over into output directory, verbatim
-                Directory.GetFiles(argAssets, "*.*", SearchOption.AllDirectories)
-                    .Select(c => new FileInfo(c))
+                Directory.GetFiles( argAssets, "*.*", SearchOption.AllDirectories )
+                    .Select( c => new FileInfo( c ) )
                     .ToList()
-                    .ForEach(c => {
+                    .ForEach( c =>
+                    {
                         // get the source file from [argAssets], erase that input path so we are left with just the relative part eg. css/local.css
                         String relPath = c.FullName.Replace(argAssets, "");
 
@@ -171,15 +169,14 @@ namespace Vanity
                         String copyPath = Path.GetFullPath(argPathOut + "/_assets/" + relPath);
 
                         // ensure the directory exists
-                        Directory.CreateDirectory(Path.GetDirectoryName(copyPath));
+                        Directory.CreateDirectory( Path.GetDirectoryName( copyPath ) );
 
                         // copy it
-                        c.CopyTo(copyPath, true);
-                        }
-                    );
+                        c.CopyTo( copyPath, true );
+                    });
 
 
-                Console.WriteLine("Gathering gallery data...");
+                Console.WriteLine( "Gathering gallery data..." );
                 ImageTree imageTree = new ImageTree(dataInputPath, photoOutputPath, alwaysRebuildThumbnails);
 
                 imageTree.mRootAlbum.mName =
@@ -187,28 +184,28 @@ namespace Vanity
 
                 Sitemap gallerySitemap = new Sitemap();
 
-                Process(imageTree.mRootAlbum, gallerySitemap);
+                Process( imageTree.mRootAlbum, gallerySitemap );
 
 
                 // about page
                 {
                     string aboutPathPath = Path.GetFullPath(argPathOut + "\\about.html");
                     TAboutPage aboutPage = new TAboutPage(imageTree.mImageCount);
-                    File.WriteAllText(aboutPathPath, HtmlCompressor.Compress(aboutPage.TransformText()));
+                    File.WriteAllText( aboutPathPath, HtmlCompressor.Compress( aboutPage.TransformText() ) );
                 }
 
                 // 404 page
                 {
                     string f404PathPath = Path.GetFullPath(argPathOut + "\\404.html");
                     T404Page f404Page = new T404Page();
-                    File.WriteAllText(f404PathPath, HtmlCompressor.Compress(f404Page.TransformText()));
+                    File.WriteAllText( f404PathPath, HtmlCompressor.Compress( f404Page.TransformText() ) );
                 }
 
                 // .htaccess
                 {
                     string htAccessPath = Path.GetFullPath(argPathOut + "\\.htaccess");
                     Thtaccess htAccess = new Thtaccess();
-                    File.WriteAllText(htAccessPath, htAccess.TransformText());
+                    File.WriteAllText( htAccessPath, htAccess.TransformText() );
                 }
 
                 // robots.txt
@@ -219,23 +216,23 @@ User-agent: *
 Allow: /
 Sitemap: {0}sitemap.xml", Settings.RootURL);
 
-                    File.WriteAllText(robotsPath, robotsTxt);
+                    File.WriteAllText( robotsPath, robotsTxt );
                 }
 
                 {
                     XmlSerializer xs = new XmlSerializer(typeof(Sitemap), new Type[] { typeof(Location) });
 
                     string sitemapPath = Path.GetFullPath(argPathOut + "\\sitemap.xml");
-                    using (TextWriter sitemapFile = new StreamWriter(sitemapPath))
+                    using ( TextWriter sitemapFile = new StreamWriter( sitemapPath ) )
                     {
-                        xs.Serialize(sitemapFile, gallerySitemap);
+                        xs.Serialize( sitemapFile, gallerySitemap );
                     }
                 }
 
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
-                Console.WriteLine("Error during image gathering : " + ex.Message + "\n" + ex.StackTrace);
+                Console.WriteLine( $"Error during image gathering : {ex.Message}\n{ex.StackTrace}" );
                 return;
             }
         }

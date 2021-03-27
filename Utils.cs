@@ -11,11 +11,11 @@ using System.Text;
 
 namespace Vanity
 {
-    abstract class Utils
+    internal static class Utils
     {
         // -----------------------------------------------------------------------------------------------------------------
         // http://stackoverflow.com/questions/12416249/hashing-a-string-with-sha256
-        public static string sha256( string stringInput )
+        public static string ComputeSHA256ForString( string stringInput )
         {
             SHA256Managed crypt = new SHA256Managed();
 
@@ -30,7 +30,7 @@ namespace Vanity
         }
 
         // -----------------------------------------------------------------------------------------------------------------
-        public static string sha256ForFile( string file )
+        public static string ComputeSHA256ForFile( string file )
         {
             SHA256Managed crypt = new SHA256Managed();
 
@@ -42,7 +42,7 @@ namespace Vanity
         }
 
         // -----------------------------------------------------------------------------------------------------------------
-        public static void jpegOptimFile( string file )
+        public static void LaunchJpegOptim64( string file )
         {
             StringBuilder jpegArgs = new StringBuilder();
             jpegArgs.Append( " --strip-com --strip-exif -p -q " );
@@ -60,7 +60,7 @@ namespace Vanity
             startInfo.RedirectStandardOutput = true;
 
             p.StartInfo = startInfo;
-            p.OutputDataReceived += ( sender, args ) => { if ( args.Data != null && args.Data.Length > 0 ) Console.WriteLine( "#> {0}", args.Data ); };
+            p.OutputDataReceived += ( sender, args ) => { if ( !string.IsNullOrEmpty( args.Data ) ) Console.WriteLine( "#> {0}", args.Data ); };
 
             p.Start();
             p.BeginOutputReadLine();
@@ -143,7 +143,7 @@ namespace Vanity
             if ( tagValue is Array array )
             {
                 // Hex rendering for really big byte arrays (ugly otherwise)
-                if ( array.Length > 20 && 
+                if ( array.Length > 20 &&
                      array.GetType().GetElementType() == typeof( byte ) )
                 {
                     return "0x" + string.Join( "", array.Cast<byte>().Select( x => x.ToString( "X2" ) ).ToArray() );
@@ -163,6 +163,5 @@ namespace Vanity
             TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
             return textInfo.ToTitleCase( result );
         }
-
     }
 }
