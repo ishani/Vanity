@@ -21,6 +21,7 @@ namespace Vanity
 
         public Int32            mThumbWidth,
                                 mThumbHeight;
+        public string           mThumbPadAspectPct;
     }
 
     // -------------------------------------------------------------------------------------------------------------------
@@ -368,6 +369,7 @@ namespace Vanity
                     {
                         imgInfo.mThumbWidth = thumbSizeLoad.Width;
                         imgInfo.mThumbHeight = thumbSizeLoad.Height;
+                        imgInfo.mThumbPadAspectPct = $"{ ((double)imgInfo.mThumbHeight / (double)imgInfo.mThumbWidth) * 100.0 :F1}%";
                     }
 
                     currentAlbum.mPhotos.Add( imgInfo );

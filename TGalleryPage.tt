@@ -140,9 +140,11 @@
 <# foreach (Photograph item in mAlbum.mPhotos) { #>
 
                     <div class="card pic-card">
-                        <a href="<#= mPhotoRootURL #>/full/<#= item.mHashedPath #>.jpg" itemprop="contentUrl" data-size="<#= item.mImageWidth #>x<#= item.mImageHeight #>">
-                            <img class="card-img-top" src="<#= mPhotoRootURL #>/thumb/<#= item.mHashedPath #>.jpg" alt="<#= item.mPrettyName #>" itemprop="thumbnail">
-                        </a>
+                        <div style="padding-top:<#= item.mThumbPadAspectPct #>;background-color: #0b0b0b;">
+                            <a href="<#= mPhotoRootURL #>/full/<#= item.mHashedPath #>.jpg" itemprop="contentUrl" data-size="<#= item.mImageWidth #>x<#= item.mImageHeight #>">
+                                <img class="card-img-top card-abstop" src="<#= mPhotoRootURL #>/thumb/<#= item.mHashedPath #>.jpg" alt="<#= item.mPrettyName #>" itemprop="thumbnail">
+                            </a>
+                        </div>
                     </div>
 
 <# } // end of foreach  #>
