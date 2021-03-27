@@ -20,7 +20,9 @@ var initPhotoSwipeFromDOM = function(gallerySelector) {
                 continue;
             }
 
-            linkEl = figureEl.children[0]; // <a> element
+            divwrap = figureEl.children[0]; // <div> pad-top element
+
+            linkEl = divwrap.children[0]; // <a> element
 
             size = linkEl.getAttribute('data-size').split('x');
 

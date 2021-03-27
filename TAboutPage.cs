@@ -131,45 +131,53 @@ namespace Vanity
             this.Write("</strong> images.</p>\r\n    <br>\r\n    <p>Questions? Go check <a href=\"https://www." +
                     "ishani.org/contact/\" target=\"_blank\">ishani.org/contact</a></p>\r\n  </div>\r\n </di" +
                     "v>\r\n\r\n");
-            this.Write("<!-- bootstrap -->\r\n<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js" +
-                    "\" integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXa" +
-                    "Rkfj\" crossorigin=\"anonymous\"></script>\r\n<script src=\"https://cdn.jsdelivr.net/n" +
-                    "pm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-Piv4xVNRyM" +
-                    "GpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns\" crossorigin=\"anonymous\">" +
-                    "</script>\r\n\r\n<!-- photoswipe JS -->\r\n<script src=\"/_assets/photoswipe/js/photosw" +
-                    "ipe.all.min.js\"></script>\r\n\r\n<!-- local JS -->\r\n<script src=\"/_assets/js/local.j" +
-                    "s\"></script>\r\n\r\n\r\n\r\n<!-- Root element of PhotoSwipe. Must have class pswp. -->\r\n" +
-                    "<div class=\"pswp\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\r\n    <!-- Back" +
-                    "ground of PhotoSwipe.\r\n    It\'s a separate element as animating opacity is faste" +
-                    "r than rgba(). -->\r\n    <div class=\"pswp__bg\"></div>\r\n    <!-- Slides wrapper wi" +
-                    "th overflow:hidden. -->\r\n    <div class=\"pswp__scroll-wrap\">\r\n        <!-- Conta" +
-                    "iner that holds slides.\r\n        PhotoSwipe keeps only 3 of them in the DOM to s" +
-                    "ave memory.\r\n        Don\'t modify these 3 pswp__item elements, data is added lat" +
-                    "er on. -->\r\n        <div class=\"pswp__container\">\r\n            <div class=\"pswp_" +
-                    "_item\"></div>\r\n            <div class=\"pswp__item\"></div>\r\n            <div clas" +
-                    "s=\"pswp__item\"></div>\r\n        </div>\r\n        <!-- Default (PhotoSwipeUI_Defaul" +
-                    "t) interface on top of sliding area. Can be changed. -->\r\n        <div class=\"ps" +
-                    "wp__ui pswp__ui--hidden\">\r\n            <div class=\"pswp__top-bar\">\r\n            " +
-                    "    <!--  Controls are self-explanatory. Order can be changed. -->\r\n            " +
-                    "    <div class=\"pswp__counter\"></div>\r\n                <button class=\"pswp__butt" +
-                    "on pswp__button--close\" title=\"Close (Esc)\"></button>\r\n                <button c" +
-                    "lass=\"pswp__button pswp__button--share\" title=\"Share\"></button>\r\n               " +
-                    " <button class=\"pswp__button pswp__button--fs\" title=\"Toggle fullscreen\"></butto" +
-                    "n>\r\n                <button class=\"pswp__button pswp__button--zoom\" title=\"Zoom " +
-                    "in/out\"></button>\r\n                <!-- Preloader demo http://codepen.io/dimseme" +
-                    "nov/pen/yyBWoR -->\r\n                <!-- element will get class pswp__preloader-" +
-                    "-active when preloader is running -->\r\n                <div class=\"pswp__preload" +
-                    "er\">\r\n                    <div class=\"pswp__preloader__icn\">\r\n                  " +
-                    "      <div class=\"pswp__preloader__cut\">\r\n                            <div class" +
-                    "=\"pswp__preloader__donut\"></div>\r\n                        </div>\r\n              " +
-                    "      </div>\r\n                </div>\r\n            </div>\r\n            <div class" +
-                    "=\"pswp__share-modal pswp__share-modal--hidden pswp__single-tap\">\r\n              " +
-                    "  <div class=\"pswp__share-tooltip\"></div>\r\n            </div>\r\n            <butt" +
-                    "on class=\"pswp__button pswp__button--arrow--left\" title=\"Previous (arrow left)\">" +
-                    "</button>\r\n            <button class=\"pswp__button pswp__button--arrow--right\" t" +
-                    "itle=\"Next (arrow right)\"></button>\r\n            <div class=\"pswp__caption\">\r\n  " +
-                    "              <div class=\"pswp__caption__center\"></div>\r\n            </div>\r\n   " +
-                    "     </div>\r\n    </div>\r\n</div>\r\n    </body>\r\n</html>");
+            this.Write(@"<!-- bootstrap -->
+<script src=""https://code.jquery.com/jquery-3.5.1.slim.min.js"" integrity=""sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"" crossorigin=""anonymous""></script>
+<script src=""https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"" integrity=""sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"" crossorigin=""anonymous""></script>
+
+<!-- photoswipe JS -->
+<script src=""/_assets/photoswipe/js/photoswipe.all.min.js""></script>
+
+<!-- local JS -->
+<script src=""/_assets/js/local.js?v=");
+            
+            #line 9 "F:\Dev\Github\Vanity\TCommonFooter.html"
+            this.Write(this.ToStringHelper.ToStringWithCulture(mVersion));
+            
+            #line default
+            #line hidden
+            this.Write("\"></script>\r\n\r\n\r\n\r\n<!-- Root element of PhotoSwipe. Must have class pswp. -->\r\n<d" +
+                    "iv class=\"pswp\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\r\n    <!-- Backgr" +
+                    "ound of PhotoSwipe.\r\n    It\'s a separate element as animating opacity is faster " +
+                    "than rgba(). -->\r\n    <div class=\"pswp__bg\"></div>\r\n    <!-- Slides wrapper with" +
+                    " overflow:hidden. -->\r\n    <div class=\"pswp__scroll-wrap\">\r\n        <!-- Contain" +
+                    "er that holds slides.\r\n        PhotoSwipe keeps only 3 of them in the DOM to sav" +
+                    "e memory.\r\n        Don\'t modify these 3 pswp__item elements, data is added later" +
+                    " on. -->\r\n        <div class=\"pswp__container\">\r\n            <div class=\"pswp__i" +
+                    "tem\"></div>\r\n            <div class=\"pswp__item\"></div>\r\n            <div class=" +
+                    "\"pswp__item\"></div>\r\n        </div>\r\n        <!-- Default (PhotoSwipeUI_Default)" +
+                    " interface on top of sliding area. Can be changed. -->\r\n        <div class=\"pswp" +
+                    "__ui pswp__ui--hidden\">\r\n            <div class=\"pswp__top-bar\">\r\n              " +
+                    "  <!--  Controls are self-explanatory. Order can be changed. -->\r\n              " +
+                    "  <div class=\"pswp__counter\"></div>\r\n                <button class=\"pswp__button" +
+                    " pswp__button--close\" title=\"Close (Esc)\"></button>\r\n                <button cla" +
+                    "ss=\"pswp__button pswp__button--share\" title=\"Share\"></button>\r\n                <" +
+                    "button class=\"pswp__button pswp__button--fs\" title=\"Toggle fullscreen\"></button>" +
+                    "\r\n                <button class=\"pswp__button pswp__button--zoom\" title=\"Zoom in" +
+                    "/out\"></button>\r\n                <!-- Preloader demo http://codepen.io/dimsemeno" +
+                    "v/pen/yyBWoR -->\r\n                <!-- element will get class pswp__preloader--a" +
+                    "ctive when preloader is running -->\r\n                <div class=\"pswp__preloader" +
+                    "\">\r\n                    <div class=\"pswp__preloader__icn\">\r\n                    " +
+                    "    <div class=\"pswp__preloader__cut\">\r\n                            <div class=\"" +
+                    "pswp__preloader__donut\"></div>\r\n                        </div>\r\n                " +
+                    "    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"" +
+                    "pswp__share-modal pswp__share-modal--hidden pswp__single-tap\">\r\n                " +
+                    "<div class=\"pswp__share-tooltip\"></div>\r\n            </div>\r\n            <button" +
+                    " class=\"pswp__button pswp__button--arrow--left\" title=\"Previous (arrow left)\"></" +
+                    "button>\r\n            <button class=\"pswp__button pswp__button--arrow--right\" tit" +
+                    "le=\"Next (arrow right)\"></button>\r\n            <div class=\"pswp__caption\">\r\n    " +
+                    "            <div class=\"pswp__caption__center\"></div>\r\n            </div>\r\n     " +
+                    "   </div>\r\n    </div>\r\n</div>\r\n    </body>\r\n</html>");
             this.Write("\r\n");
             return this.GenerationEnvironment.ToString();
         }
