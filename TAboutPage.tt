@@ -24,7 +24,7 @@
 
         </div>
 
-
+<#     if ( String.IsNullOrEmpty(mCustomAboutText) ) { #>
   <div class="jumbotron bg-dark">
     <h1>About</h1>
     <p>Hello! I'm Harry, this is where I park the pictures I can stand to show other people. My main site is <a href="http://www.ishani.org/" target="_blank">over yonder</a>.</p>
@@ -36,6 +36,13 @@
     <br>
     <p>Questions? Go check <a href="https://www.ishani.org/contact/" target="_blank">ishani.org/contact</a></p>
   </div>
+<# } else { #> 
+  <div class="jumbotron bg-dark">
+    <h1>About</h1>
+    <p><#= mCustomAboutText #></p>
+  </div>
+<# } #> 
  </div>
+
 
 <#@ include file="TCommonFooter.html" #>

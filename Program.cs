@@ -3,12 +3,60 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
+using Newtonsoft.Json;
+
 namespace Vanity
 {
+    [Serializable]
+    internal class SettingsFromDisk
+    {
+        static readonly Lazy<SettingsFromDisk> instanceHolder = new Lazy<SettingsFromDisk>(() => LoadSettings());
+        public static SettingsFromDisk Instance => instanceHolder.Value;
+
+        private static SettingsFromDisk LoadSettings()
+        {
+            try
+            {
+                string fileName = "VanitySettings.json";
+                if ( File.Exists( fileName ) )
+                {
+                    Console.WriteLine( "Loading site settings from VanitySettings.json ..." );
+
+                    string jsonString = File.ReadAllText(fileName);
+                    var fromDisk = JsonConvert.DeserializeObject<SettingsFromDisk>( jsonString );
+
+                    Console.WriteLine( $"RootURL        : {fromDisk.RootURL}" );
+                    Console.WriteLine( $"GalleryName    : {fromDisk.GalleryName}" );
+                    Console.WriteLine( $"GalleryOwner   : {fromDisk.GalleryOwner}" );
+                    return fromDisk;
+                }
+                else
+                {
+                    Console.WriteLine( "No VanitySettings.json found, using defaults" );
+                    return new SettingsFromDisk();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine( "Error - failed to read VanitySettings.json, using defaults" );
+                Console.WriteLine( ex.Message );
+                return new SettingsFromDisk();
+            }
+        }
+
+        SettingsFromDisk()
+        {
+        }
+
+        public string RootURL { get; set; }         = "http://photography.ishani.org/";
+        public string GalleryName { get; set; }     = "Ishani's Gallery";
+        public string GalleryOwner { get; set; }    = "Harry Denholm";
+        public string GoogleUATag { get; set; }     = "UA-17765969-6";
+        public string CustomAboutText { get; set; } = "";
+    }
+
     internal static class Settings
     {
-        public static string RootURL = "http://photography.ishani.org/";
-
         public static Int32  AssetReqVersion = (new Random()).Next(9999);
     }
 
@@ -17,6 +65,9 @@ namespace Vanity
     {
         private readonly String mRootURL;
         private readonly String mPageTitle;
+        private readonly String mGalleryName;
+        private readonly String mGalleryOwner;
+        private readonly String mGoogleUATag;
 
         private readonly AlbumFolder mAlbum;
         private readonly String mGalleryRootURL;
@@ -26,7 +77,10 @@ namespace Vanity
 
         public TGalleryPage( AlbumFolder album )
         {
-            mRootURL        = Settings.RootURL;
+            mRootURL        = SettingsFromDisk.Instance.RootURL;
+            mGalleryName    = SettingsFromDisk.Instance.GalleryName;
+            mGalleryOwner   = SettingsFromDisk.Instance.GalleryOwner;
+            mGoogleUATag    = SettingsFromDisk.Instance.GoogleUATag;
             mPageTitle      = album.mPrettyName;
             mVersion        = Settings.AssetReqVersion;
             mGalleryRootURL = "/";
@@ -40,13 +94,22 @@ namespace Vanity
     {
         private readonly String mRootURL;
         private readonly String mPageTitle;
+        private readonly String mGalleryName;
+        private readonly String mGalleryOwner;
+        private readonly String mGoogleUATag;
+
+        private readonly String mCustomAboutText;
 
         private readonly Int32 mImageCount;
         private readonly Int32 mVersion;
 
         public TAboutPage( Int32 imageCount )
         {
-            mRootURL        = Settings.RootURL;
+            mRootURL        = SettingsFromDisk.Instance.RootURL;
+            mGalleryName    = SettingsFromDisk.Instance.GalleryName;
+            mGalleryOwner   = SettingsFromDisk.Instance.GalleryOwner;
+            mGoogleUATag    = SettingsFromDisk.Instance.GoogleUATag;
+            mCustomAboutText = SettingsFromDisk.Instance.CustomAboutText;
             mPageTitle      = "About";
             mVersion        = Settings.AssetReqVersion;
             mImageCount     = imageCount;
@@ -58,12 +121,18 @@ namespace Vanity
     {
         private readonly String mRootURL;
         private readonly String mPageTitle;
+        private readonly String mGalleryName;
+        private readonly String mGalleryOwner;
+        private readonly String mGoogleUATag;
 
         private readonly Int32 mVersion;
 
         public T404Page()
         {
-            mRootURL        = Settings.RootURL;
+            mRootURL        = SettingsFromDisk.Instance.RootURL;
+            mGalleryName    = SettingsFromDisk.Instance.GalleryName;
+            mGalleryOwner   = SettingsFromDisk.Instance.GalleryOwner;
+            mGoogleUATag    = SettingsFromDisk.Instance.GoogleUATag;
             mPageTitle      = "404";
             mVersion        = Settings.AssetReqVersion;
         }
@@ -103,7 +172,7 @@ namespace Vanity
 
             sitemap.Add( new Location()
             {
-                Url = Settings.RootURL + albumFolder.mRelativeRoot.Replace( "\\", "/" ),
+                Url = SettingsFromDisk.Instance.RootURL + albumFolder.mRelativeRoot.Replace( "\\", "/" ),
                 ChangeFrequency = Location.eChangeFrequency.monthly,
                 LastModified = albumFolder.mLastModified
             } );
@@ -116,6 +185,8 @@ namespace Vanity
 
         private static void Main( string[] args )
         {
+            Console.WriteLine( "----------- Vanity Gallery Site Generation -----------" );
+
             CLA.Run( typeof( Program ), args );
 
             if ( argPathIn == null )
@@ -214,7 +285,7 @@ namespace Vanity
                     string robotsTxt = string.Format(@"
 User-agent: *
 Allow: /
-Sitemap: {0}sitemap.xml", Settings.RootURL);
+Sitemap: {0}sitemap.xml", SettingsFromDisk.Instance.RootURL);
 
                     File.WriteAllText( robotsPath, robotsTxt );
                 }

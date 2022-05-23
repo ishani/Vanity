@@ -68,9 +68,9 @@
 
                 <# if (isHomePage) { #>
                     <div class="page-title text-uppercase text-info">
-                        Ishani <span class="d-none d-sm-inline">·</span> Gallery
+                        <#= mGalleryName #> <span class="d-none d-sm-inline">·</span> Gallery
                     </div>                
-                    <i>Photography by Harry Denholm. All images <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC-BY-NC-ND</a>.</i>
+                    <i>Photography by <#= mGalleryOwner #>. All images <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC-BY-NC-ND</a>.</i>
                 <# } else { #> 
                     <div class="page-title text-uppercase text-warning">
                         <#= mAlbum.mPrettyName #>
